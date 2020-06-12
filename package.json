@@ -4,7 +4,8 @@
   "description": "Application that manages some information regarding insurance policies and company clients.",
   "main": "server.js",
   "scripts": {
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "test": "mocha"
   },
   "author": "Vasil Markov",
   "license": "ISC",
@@ -16,6 +17,9 @@
     "jsonwebtoken": "^8.5.1"
   },
   "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
+    "mocha": "^8.0.1",
     "nodemon": "^2.0.4"
   }
 }
