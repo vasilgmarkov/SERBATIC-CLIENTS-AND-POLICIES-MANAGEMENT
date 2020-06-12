@@ -1,0 +1,17 @@
+{
+  "name": "serbatic-techtest",
+  "version": "1.0.0",
+  "description": "Application that manages some information regarding insurance policies and company clients.",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon server.js"
+  },
+  "author": "Vasil Markov",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}
