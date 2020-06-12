@@ -8,7 +8,9 @@ const server = require("../server.js");
 
 const expect = chai.expect;
 chai.use(chaiHttp);
-
+/**
+ * TEST USER API
+ */
 describe("User /api/user", () => {
   /**
    * Test the POST route
@@ -112,6 +114,84 @@ describe("User /api/user", () => {
           //assertions
           expect(response).to.have.status(400);
           expect(response.body.msg).to.be.equal("Token not provided.");
+          done();
+        });
+    });
+  });
+});
+/**
+ * TEST CLIENTS API
+ */
+describe("Clients /api/clients", () => {
+  /**
+   * Test the GET auth route by :/id
+   */
+  describe("GET /api/clients/:id", () => {
+    it("It should get the client based on the client id", (done) => {
+      const clientId = "a74c83c5-e271-4ecf-a429-d47af952cfd4";
+      chai
+        .request(server)
+        .get(`/api/clients/${clientId}`)
+        .set("access-token", tokenS)
+        .end((err, response) => {
+          //assertions
+          expect(response).to.have.status(200);
+          expect(response.body).to.be.a("object");
+          expect(response.body)
+            .to.have.property("id")
+            .eq("a74c83c5-e271-4ecf-a429-d47af952cfd4");
+          done();
+        });
+    });
+
+    it("It should NOT get the client based on the client id", (done) => {
+      const clientId = "1234";
+      chai
+        .request(server)
+        .get(`/api/clients/${clientId}`)
+        .set("access-token", tokenS)
+        .end((err, response) => {
+          //assertions
+          expect(response).to.have.status(404);
+          expect(response.body).to.be.a("object");
+          expect(response.body.msg).to.be.equal("No client found");
+          done();
+        });
+    });
+  });
+  /**
+   * Test the GET auth route by /name:/name
+   */
+  describe("GET /api/clients/name/:name", () => {
+    it("It should get the client based on the client name", (done) => {
+      const clientName = "Whitley";
+      chai
+        .request(server)
+        .get(`/api/clients/name/${clientName}`)
+        .set("access-token", tokenS)
+        .end((err, response) => {
+          //assertions
+          expect(response).to.have.status(200);
+          expect(response.body).to.be.a("array");
+          expect(response.body[0])
+            .to.have.property("id")
+            .eq("0178914c-548b-4a4c-b918-47d6a391530c");
+          expect(response.body[0]).to.have.property("name").eq(clientName);
+          done();
+        });
+    });
+
+    it("It should NOT get the client based on the client name", (done) => {
+      const clientName = "Vasil";
+      chai
+        .request(server)
+        .get(`/api/clients/${clientName}`)
+        .set("access-token", tokenS)
+        .end((err, response) => {
+          //assertions
+          expect(response).to.have.status(404);
+          expect(response.body).to.be.a("object");
+          expect(response.body.msg).to.be.equal("No client found");
           done();
         });
     });

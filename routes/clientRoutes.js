@@ -10,6 +10,7 @@ const auth = require("../auth/authCheck");
  */
 router.get("/:id", auth.checkToken, async (req, res) => {
   const clientId = req.params.id;
+
   if (!clientId) res.status(404).json({ msg: "No id param provided" });
   let clients = await getClients();
   const user = getUser(clients, "id", req.decoded.id);
@@ -18,7 +19,7 @@ router.get("/:id", auth.checkToken, async (req, res) => {
     if (client) {
       res.json(client);
     } else {
-      res.json({ msg: "No client found" });
+      res.status(404).json({ msg: "No client found" });
     }
   } else {
     res.status(401).json({ msg: "Unauthorized" });
@@ -40,7 +41,7 @@ router.get("/name/:name", auth.checkToken, async (req, res) => {
     if (clientsByName.length !== 0) {
       res.json(clientsByName);
     } else {
-      res.json({ msg: "No client found" });
+      res.status(404).json({ msg: "No client found" });
     }
   } else {
     res.status(401).json({ msg: "Unauthorized" });
