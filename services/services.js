@@ -18,5 +18,11 @@ exports.getClients = async () => {
  * Get user from clients key(id,name) and value
  */
 exports.getUser = (clients, key, value) => {
-  return clients.find((user) => user[key] === value);
+  if (key === "name") {
+    return clients.filter(
+      (user) => user[key].toLowerCase() === value.toLowerCase()
+    );
+  } else {
+    return clients.find((user) => user[key] === value);
+  }
 };
