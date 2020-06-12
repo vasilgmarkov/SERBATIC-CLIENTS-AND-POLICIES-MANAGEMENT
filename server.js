@@ -4,6 +4,7 @@ const app = express();
 const port = process.env.PORT || 5000;
 const userRoutes = require("./routes/userRoutes");
 const clientRoutes = require("./routes/clientRoutes");
+const policyRoutes = require("./routes/policyRoutes");
 app.use(express.json());
 
 /**
@@ -16,6 +17,12 @@ app.use("/api/user", userRoutes);
  */
 
 app.use("/api/clients", clientRoutes);
+
+/**
+ * Policies routes
+ */
+
+app.use("/api/policies", policyRoutes);
 
 app.get("/api/test", (req, res) => {
   res.send("All good ");

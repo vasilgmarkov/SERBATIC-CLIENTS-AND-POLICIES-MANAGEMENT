@@ -1,0 +1,235 @@
+{
+	"info": {
+		"_postman_id": "31356b30-25bf-4bcb-b952-faf9a70df7b5",
+		"name": "SERBATIC_API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n \"email\" : \"britneyblankenship@quotezart.com\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/user/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"user",
+						"login"
+					]
+				},
+				"description": "User login with email based on the client data."
+			},
+			"response": []
+		},
+		{
+			"name": "profile",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "access-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImEwZWNlNWRiLWNkMTQtNGYyMS04MTJmLTk2NjYzM2U3YmU4NiIsImlhdCI6MTU5MjAwMzA0MSwiZXhwIjoxNTkyMDA0NDgxfQ.DxTA6JE1Osj3n8LcSwrpm6v0pejNEApqJc5hyh6Tc0M",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/user/profile",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"user",
+						"profile"
+					]
+				},
+				"description": "Get logged user details based on the access-token."
+			},
+			"response": []
+		},
+		{
+			"name": "client by id",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "access-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImEwZWNlNWRiLWNkMTQtNGYyMS04MTJmLTk2NjYzM2U3YmU4NiIsImlhdCI6MTU5MjAwMzA0MSwiZXhwIjoxNTkyMDA0NDgxfQ.DxTA6JE1Osj3n8LcSwrpm6v0pejNEApqJc5hyh6Tc0M",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/clients/a74c83c5-e271-4ecf-a429-d47af952cfd4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"clients",
+						"a74c83c5-e271-4ecf-a429-d47af952cfd4"
+					]
+				},
+				"description": "Get client by id."
+			},
+			"response": []
+		},
+		{
+			"name": "client by name",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "access-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImEwZWNlNWRiLWNkMTQtNGYyMS04MTJmLTk2NjYzM2U3YmU4NiIsImlhdCI6MTU5MjAwMzA0MSwiZXhwIjoxNTkyMDA0NDgxfQ.DxTA6JE1Osj3n8LcSwrpm6v0pejNEApqJc5hyh6Tc0M",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/clients/name/Manning",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"clients",
+						"name",
+						"Manning"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": ""
+						}
+					]
+				},
+				"description": "Get client by name."
+			},
+			"response": []
+		},
+		{
+			"name": "list of policies by client name",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "access-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImEwZWNlNWRiLWNkMTQtNGYyMS04MTJmLTk2NjYzM2U3YmU4NiIsImlhdCI6MTU5MjAwMzA0MSwiZXhwIjoxNTkyMDA0NDgxfQ.DxTA6JE1Osj3n8LcSwrpm6v0pejNEApqJc5hyh6Tc0M",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/policies/client/Britney",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"policies",
+						"client",
+						"Britney"
+					]
+				},
+				"description": "Get list of policies based on client name"
+			},
+			"response": []
+		},
+		{
+			"name": "client by policy id",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "access-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImEwZWNlNWRiLWNkMTQtNGYyMS04MTJmLTk2NjYzM2U3YmU4NiIsImlhdCI6MTU5MjAwMzA0MSwiZXhwIjoxNTkyMDA0NDgxfQ.DxTA6JE1Osj3n8LcSwrpm6v0pejNEApqJc5hyh6Tc0M",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/policies/98e9c6b2-6555-4777-953a-634f2c14749a",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"policies",
+						"98e9c6b2-6555-4777-953a-634f2c14749a"
+					]
+				},
+				"description": "Get client details based on policy id"
+			},
+			"response": []
+		}
+	]
+}
