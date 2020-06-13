@@ -1,7 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const userSchema = require("../utils/userSchema.js");
-const { getClients, getUser } = require("../services/services.js");
+const {
+  getClients,
+  getUser,
+  handleSourceError,
+} = require("../services/services.js");
 const jwt = require("jsonwebtoken");
 const auth = require("../auth/authCheck");
 
@@ -15,9 +19,10 @@ router.post("/login", async (req, res) => {
   const { error } = userSchema.validateUser(req.body);
   const { email } = req.body;
   if (error) return res.status(400).json({ msg: "The email is required!" });
-  let clients = await getClients();
-
-  const user = getUser(clients, "email", email);
+  let result = await getClients(res);
+  if (handleSourceError(result))
+    return res.status(500).json({ msg: "Internal Server Error" });
+  const user = getUser(result, "email", email);
   if (!user) return res.status(404).json({ msg: "The user does not exist" });
   const payload = {
     id: user.id,
@@ -38,8 +43,10 @@ router.post("/login", async (req, res) => {
  */
 
 router.get("/profile", auth.checkToken, async (req, res) => {
-  let clients = await getClients();
-  const user = getUser(clients, "id", req.decoded.id);
+  let result = await getClients();
+  if (handleSourceError(result))
+    return res.status(500).json({ msg: "Internal Server Error" });
+  const user = getUser(result, "id", req.decoded.id);
   res.json(user);
 });
 

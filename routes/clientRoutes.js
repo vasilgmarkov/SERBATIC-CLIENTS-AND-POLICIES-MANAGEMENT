@@ -1,6 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const { getClients, getUser } = require("../services/services.js");
+const {
+  getClients,
+  getUser,
+  handleSourceError,
+} = require("../services/services.js");
 const auth = require("../auth/authCheck");
 
 /**
@@ -12,10 +16,12 @@ router.get("/:id", auth.checkToken, async (req, res) => {
   const clientId = req.params.id;
 
   if (!clientId) res.status(404).json({ msg: "No id param provided" });
-  let clients = await getClients();
-  const user = getUser(clients, "id", req.decoded.id);
+  let result = await getClients();
+  if (handleSourceError(result))
+    return res.status(500).json({ msg: "Internal Server Error" });
+  const user = getUser(result, "id", req.decoded.id);
   if (user.role === "user" || user.role === "admin") {
-    const client = getUser(clients, "id", clientId);
+    const client = getUser(result, "id", clientId);
     if (client) {
       res.json(client);
     } else {
@@ -34,12 +40,14 @@ router.get("/:id", auth.checkToken, async (req, res) => {
 router.get("/name/:name", auth.checkToken, async (req, res) => {
   const clientName = req.params.name;
   if (!clientName) res.status(404).json({ msg: "No name param provided" });
-  let clients = await getClients();
-  const user = getUser(clients, "id", req.decoded.id);
+  let result = await getClients();
+  if (handleSourceError(result))
+    return res.status(500).json({ msg: "Internal Server Error" });
+  const user = getUser(result, "id", req.decoded.id);
   if (user.role === "user" || user.role === "admin") {
-    const clientsByName = getUser(clients, "name", clientName);
-    if (clientsByName.length !== 0) {
-      res.json(clientsByName);
+    const client = getUser(result, "name", clientName);
+    if (client) {
+      res.json(client);
     } else {
       res.status(404).json({ msg: "No client found" });
     }

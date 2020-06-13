@@ -7,8 +7,8 @@ exports.getClients = async () => {
     let res = await axios.get(
       "http://www.mocky.io/v2/5808862710000087232b75ac"
     );
-    let clients = res.data.clients;
-    return clients;
+    let result = res.data.clients;
+    return result;
   } catch (error) {
     return { err: error };
   }
@@ -51,5 +51,11 @@ exports.getPoliciesByClient = (policies, key, value) => {
     return policies.filter((policy) => policy[key] === value);
   } else {
     return policies.find((policy) => policy[key] === value);
+  }
+};
+
+exports.handleSourceError = (response) => {
+  if (response.hasOwnProperty("err")) {
+    return true;
   }
 };
