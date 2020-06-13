@@ -1,7 +1,7 @@
 const chai = require("chai");
 const chaiHttp = require("chai-http");
 const server = require("../server.js");
-const { getClients } = require("../services/services.js");
+const { getClients, getPolicies } = require("../services/services.js");
 /**
  * Assertion style
  */
@@ -212,6 +212,168 @@ describe("Clients /api/clients", () => {
           expect(response).to.have.status(404);
           expect(response.body).to.be.a("object");
           expect(response.body.msg).to.be.equal("No client found");
+          done();
+        });
+    });
+  });
+});
+/**
+ * TEST POLICIES API
+ */
+describe("Policies /api/policies", () => {
+  /**
+   * Test the policies source url
+   */
+  describe("Fetch data from the policies url", () => {
+    it("It should return array", async () => {
+      var result = await getPolicies(
+        "http://www.mocky.io/v2/580891a4100000e8242b75c5"
+      );
+      expect(result).to.be.an("Array");
+      expect(result).to.have.length.above(0);
+    });
+    it("It should NOT return array", async () => {
+      var result = await getPolicies(
+        "http://www.mocky.io/v2/580891a4100000e8242b75c5b"
+      );
+      expect(result).to.be.an("object");
+      expect(result.err.response).to.have.status(404);
+      expect(result.err.response.statusText).to.be.equal("Not Found");
+    });
+  });
+  /**
+   * Test the GET auth route by client :/name
+   */
+  describe("GET /api/policies/client/:name", () => {
+    it("It should get list of policies based on the client name", (done) => {
+      const clientName = "Britney";
+      chai
+        .request(server)
+        .get(`/api/policies/client/${clientName}`)
+        .set("access-token", tokenS)
+        .end((err, response) => {
+          //assertions
+          expect(response).to.have.status(200);
+          expect(response.body).to.be.a("array");
+          done();
+        });
+    });
+
+    it("It should get list of policies 0 based on the client name", (done) => {
+      const clientName = "Vang";
+      chai
+        .request(server)
+        .get(`/api/policies/client/${clientName}`)
+        .set("access-token", tokenS)
+        .end((err, response) => {
+          //assertions
+          expect(response).to.have.status(200);
+          expect(response.body).to.be.a("array");
+          expect(response.body).length(0);
+
+          done();
+        });
+    });
+
+    it("It should NOT get any policy based on the client name", (done) => {
+      const clientName = "Vasil";
+      chai
+        .request(server)
+        .get(`/api/policies/client/${clientName}`)
+        .set("access-token", tokenS)
+        .end((err, response) => {
+          //assertions
+          expect(response).to.have.status(404);
+          expect(response.body).to.be.a("object");
+          expect(response.body.msg).to.be.equal(
+            `No client with name: ${clientName}`
+          );
+          done();
+        });
+    });
+  });
+  /**
+   * Test the GET auth route by policy :/id
+   */
+  describe("GET /api/policies/:id", () => {
+    it("It should get the client based on the policy id", (done) => {
+      const policyId = "85515a6a-686f-45ad-b173-3d44a28856e5";
+      chai
+        .request(server)
+        .get(`/api/policies/${policyId}`)
+        .set("access-token", tokenS)
+        .end((err, response) => {
+          //assertions
+          expect(response).to.have.status(200);
+          expect(response.body).to.be.a("object");
+          done();
+        });
+    });
+    it("It should NOT get the client based on the policy id", (done) => {
+      const policyId = "85515a6a-686f-45ad-b173-3d44a28856e";
+      chai
+        .request(server)
+        .get(`/api/policies/${policyId}`)
+        .set("access-token", tokenS)
+        .end((err, response) => {
+          //assertions
+          expect(response).to.have.status(404);
+          expect(response.body).to.be.a("object");
+          expect(response.body.msg).to.be.equal(
+            `No policy with id: ${policyId}`
+          );
+          done();
+        });
+    });
+  });
+  /**
+   * Test the GET auth route by client name or policy id NO admin role user
+   */
+  describe("GET /api/policies/client/:name && /api/policies/:id", () => {
+    it("It should login the user", (done) => {
+      //mock user input
+      const user = {
+        email: "barnettblankenship@quotezart.com",
+      };
+
+      chai
+        .request(server)
+        .post("/api/user/login")
+        .send(user)
+        .end((err, response) => {
+          //assertions
+          expect(response).to.have.status(200);
+          expect(response.body.token).to.exist;
+          tokenS = response.body.token;
+          expect(response.body.msg).to.be.equal("Authentication done");
+          done();
+        });
+    });
+
+    it("It should NOT get any policy based on the client(logged in user no admin role)", (done) => {
+      const clientName = "Britney";
+      chai
+        .request(server)
+        .get(`/api/policies/client/${clientName}`)
+        .set("access-token", tokenS)
+        .end((err, response) => {
+          //assertions
+          expect(response).to.have.status(401);
+          expect(response.body.msg).to.be.equal("Unauthorized");
+          done();
+        });
+    });
+
+    it("It should NOT get any client based on the policy id(logged in user no admin role)", (done) => {
+      const policyId = "85515a6a-686f-45ad-b173-3d44a28856e5";
+      chai
+        .request(server)
+        .get(`/api/policies/${policyId}`)
+        .set("access-token", tokenS)
+        .end((err, response) => {
+          //assertions
+          expect(response).to.have.status(401);
+          expect(response.body.msg).to.be.equal("Unauthorized");
           done();
         });
     });
