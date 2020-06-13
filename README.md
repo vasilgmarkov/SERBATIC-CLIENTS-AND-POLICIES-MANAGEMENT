@@ -58,6 +58,8 @@ After installing node, this project will need yarn too, so just run the followin
 Create `.env` file and then insert:
 
 - JWT_SECRET = your secret phrase;
+- CLIENT_URL = http://www.mocky.io/v2/5808862710000087232b75ac
+- POLICIES_URL = http://www.mocky.io/v2/580891a4100000e8242b75c5
 
 ## Running the project
 
