@@ -14,9 +14,9 @@ const auth = require("../auth/authCheck");
  */
 router.get("/:id", auth.checkToken, async (req, res) => {
   const clientId = req.params.id;
-
+  const url = process.env.CLIENT_URL;
   if (!clientId) res.status(404).json({ msg: "No id param provided" });
-  let result = await getClients();
+  let result = await getClients(url);
   if (handleSourceError(result))
     return res.status(500).json({ msg: "Internal Server Error" });
   const user = getUser(result, "id", req.decoded.id);
@@ -39,8 +39,9 @@ router.get("/:id", auth.checkToken, async (req, res) => {
  */
 router.get("/name/:name", auth.checkToken, async (req, res) => {
   const clientName = req.params.name;
+  const url = process.env.CLIENT_URL;
   if (!clientName) res.status(404).json({ msg: "No name param provided" });
-  let result = await getClients();
+  let result = await getClients(url);
   if (handleSourceError(result))
     return res.status(500).json({ msg: "Internal Server Error" });
   const user = getUser(result, "id", req.decoded.id);

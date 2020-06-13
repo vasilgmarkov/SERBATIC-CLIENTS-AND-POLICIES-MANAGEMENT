@@ -16,10 +16,11 @@ const auth = require("../auth/authCheck");
  */
 
 router.post("/login", async (req, res) => {
+  const url = process.env.CLIENT_URL;
   const { error } = userSchema.validateUser(req.body);
   const { email } = req.body;
   if (error) return res.status(400).json({ msg: "The email is required!" });
-  let result = await getClients(res);
+  let result = await getClients(url);
   if (handleSourceError(result))
     return res.status(500).json({ msg: "Internal Server Error" });
   const user = getUser(result, "email", email);
@@ -43,7 +44,8 @@ router.post("/login", async (req, res) => {
  */
 
 router.get("/profile", auth.checkToken, async (req, res) => {
-  let result = await getClients();
+  const url = process.env.CLIENT_URL;
+  let result = await getClients(url);
   if (handleSourceError(result))
     return res.status(500).json({ msg: "Internal Server Error" });
   const user = getUser(result, "id", req.decoded.id);
