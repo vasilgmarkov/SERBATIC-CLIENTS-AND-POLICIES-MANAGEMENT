@@ -1,13 +1,14 @@
 const chai = require("chai");
 const chaiHttp = require("chai-http");
 const server = require("../server.js");
-
+const { getClients } = require("../services/services.js");
 /**
  * Assertion style
  */
 
 const expect = chai.expect;
 chai.use(chaiHttp);
+
 /**
  * TEST USER API
  */
@@ -124,6 +125,25 @@ describe("User /api/user", () => {
  */
 describe("Clients /api/clients", () => {
   /**
+   * Test the client source url
+   */
+  describe("Fetch data from the clients url", () => {
+    it("It should return array", async () => {
+      var result = await getClients(
+        "http://www.mocky.io/v2/5808862710000087232b75ac"
+      );
+      expect(result).to.be.an("Array");
+    });
+    it("It should NOT return array", async () => {
+      var result = await getClients(
+        "http://www.mocky.io/v2/5808862710000087232b75acb"
+      );
+      expect(result).to.be.an("object");
+      expect(result.err.response).to.have.status(404);
+      expect(result.err.response.statusText).to.be.equal("Not Found");
+    });
+  });
+  /**
    * Test the GET auth route by :/id
    */
   describe("GET /api/clients/:id", () => {
@@ -172,11 +192,11 @@ describe("Clients /api/clients", () => {
         .end((err, response) => {
           //assertions
           expect(response).to.have.status(200);
-          expect(response.body).to.be.a("array");
-          expect(response.body[0])
+          expect(response.body).to.be.a("object");
+          expect(response.body)
             .to.have.property("id")
             .eq("0178914c-548b-4a4c-b918-47d6a391530c");
-          expect(response.body[0]).to.have.property("name").eq(clientName);
+          expect(response.body).to.have.property("name").eq(clientName);
           done();
         });
     });
