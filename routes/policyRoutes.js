@@ -26,11 +26,7 @@ router.get("/client/:clientName", auth.checkToken, async (req, res) => {
     if (client) {
       let policies = await getPolicies(urlPolicies);
       let userPolicies = getPoliciesByClient(policies, "clientId", client.id);
-      if (userPolicies.length !== 0) {
-        res.json(userPolicies);
-      } else {
-        res.status(404).json({ msg: "No policies found" });
-      }
+      res.json(userPolicies);
     } else {
       res.status(404).json({ msg: `No client with name: ${clientName}` });
     }
@@ -57,11 +53,8 @@ router.get("/:id", auth.checkToken, async (req, res) => {
     let policy = getPoliciesByClient(policies, "id", policyId);
     if (policy) {
       const client = getUser(clients, "id", policy.clientId);
-      if (client) {
-        res.json(client);
-      } else {
-        res.status(404).json({ msg: "No client found" });
-      }
+
+      res.json(client);
     } else {
       res.status(404).json({ msg: `No policy with id: ${policyId}` });
     }
