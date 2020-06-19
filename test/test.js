@@ -9,6 +9,8 @@ const { getClients, getPolicies } = require("../services/services.js");
 const expect = chai.expect;
 chai.use(chaiHttp);
 
+let jwtToken = "";
+
 /**
  * TEST USER API
  */
@@ -31,7 +33,7 @@ describe("User /api/user", () => {
           //assertions
           expect(response).to.have.status(200);
           expect(response.body.token).to.exist;
-          tokenS = response.body.token;
+          jwtToken = response.body.token;
           expect(response.body.msg).to.be.equal("Authentication done");
           done();
         });
@@ -81,7 +83,7 @@ describe("User /api/user", () => {
       chai
         .request(server)
         .get("/api/user/profile")
-        .set("access-token", tokenS)
+        .set("access-token", jwtToken)
         .end((err, response) => {
           //assertions
           expect(response).to.have.status(200);
@@ -97,7 +99,7 @@ describe("User /api/user", () => {
       chai
         .request(server)
         .get("/api/user/profile")
-        .set("access-token", tokenS + "s")
+        .set("access-token", jwtToken + "s")
         .end((err, response) => {
           //assertions
           expect(response).to.have.status(401);
@@ -152,7 +154,7 @@ describe("Clients /api/clients", () => {
       chai
         .request(server)
         .get(`/api/clients/${clientId}`)
-        .set("access-token", tokenS)
+        .set("access-token", jwtToken)
         .end((err, response) => {
           //assertions
           expect(response).to.have.status(200);
@@ -169,7 +171,7 @@ describe("Clients /api/clients", () => {
       chai
         .request(server)
         .get(`/api/clients/${clientId}`)
-        .set("access-token", tokenS)
+        .set("access-token", jwtToken)
         .end((err, response) => {
           //assertions
           expect(response).to.have.status(404);
@@ -188,7 +190,7 @@ describe("Clients /api/clients", () => {
       chai
         .request(server)
         .get(`/api/clients/name/${clientName}`)
-        .set("access-token", tokenS)
+        .set("access-token", jwtToken)
         .end((err, response) => {
           //assertions
           expect(response).to.have.status(200);
@@ -206,7 +208,7 @@ describe("Clients /api/clients", () => {
       chai
         .request(server)
         .get(`/api/clients/${clientName}`)
-        .set("access-token", tokenS)
+        .set("access-token", jwtToken)
         .end((err, response) => {
           //assertions
           expect(response).to.have.status(404);
@@ -250,7 +252,7 @@ describe("Policies /api/policies", () => {
       chai
         .request(server)
         .get(`/api/policies/client/${clientName}`)
-        .set("access-token", tokenS)
+        .set("access-token", jwtToken)
         .end((err, response) => {
           //assertions
           expect(response).to.have.status(200);
@@ -264,7 +266,7 @@ describe("Policies /api/policies", () => {
       chai
         .request(server)
         .get(`/api/policies/client/${clientName}`)
-        .set("access-token", tokenS)
+        .set("access-token", jwtToken)
         .end((err, response) => {
           //assertions
           expect(response).to.have.status(200);
@@ -280,7 +282,7 @@ describe("Policies /api/policies", () => {
       chai
         .request(server)
         .get(`/api/policies/client/${clientName}`)
-        .set("access-token", tokenS)
+        .set("access-token", jwtToken)
         .end((err, response) => {
           //assertions
           expect(response).to.have.status(404);
@@ -301,7 +303,7 @@ describe("Policies /api/policies", () => {
       chai
         .request(server)
         .get(`/api/policies/${policyId}`)
-        .set("access-token", tokenS)
+        .set("access-token", jwtToken)
         .end((err, response) => {
           //assertions
           expect(response).to.have.status(200);
@@ -314,7 +316,7 @@ describe("Policies /api/policies", () => {
       chai
         .request(server)
         .get(`/api/policies/${policyId}`)
-        .set("access-token", tokenS)
+        .set("access-token", jwtToken)
         .end((err, response) => {
           //assertions
           expect(response).to.have.status(404);
@@ -344,7 +346,7 @@ describe("Policies /api/policies", () => {
           //assertions
           expect(response).to.have.status(200);
           expect(response.body.token).to.exist;
-          tokenS = response.body.token;
+          jwtToken = response.body.token;
           expect(response.body.msg).to.be.equal("Authentication done");
           done();
         });
@@ -355,7 +357,7 @@ describe("Policies /api/policies", () => {
       chai
         .request(server)
         .get(`/api/policies/client/${clientName}`)
-        .set("access-token", tokenS)
+        .set("access-token", jwtToken)
         .end((err, response) => {
           //assertions
           expect(response).to.have.status(401);
@@ -369,7 +371,7 @@ describe("Policies /api/policies", () => {
       chai
         .request(server)
         .get(`/api/policies/${policyId}`)
-        .set("access-token", tokenS)
+        .set("access-token", jwtToken)
         .end((err, response) => {
           //assertions
           expect(response).to.have.status(401);
